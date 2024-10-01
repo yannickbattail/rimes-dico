@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <title>Dico</title>
+    <style>
+      #result {
+        border: 1px solid black;
+      }
+      #result td:nth-child(1) {
+        border: 1px solid blue;
+      }
+      #result td:nth-child(2) {
+        border: 1px solid green;
+      }
+      .API {
+        cursor: pointer;
+        font-weight: bold;
+        color: blue;
+      }
+
+      .toggleBlock {
+        border-style: solid;
+        border-width: 1px;
+        border-color: var(--text-color);
+        border-radius: 4px 4px 0px 0px;
+        padding: 3px;
+        margin: 4px;
+      }
+      .toggleShow,
+      .toggleHide {
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      .toggleShow {
+      }
+      .toggleShow::before {
+        content: "▼ ";
+      }
+      .toggleShow + div {
+        display: block;
+      }
+      .toggleHide {
+      }
+      .toggleHide::before {
+        content: "▶ ";
+      }
+      .toggleHide + div {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <input type="text" id="search" placeholder="Rechercher un mot" />
+    <input type="radio" id="start" name="position" value="start" checked />
+    <label for="start">Début</label>
+    <input type="radio" id="end" name="position" value="end" />
+    <label for="end">Fin</label>
+    <input type="button" value="Rechercher" onclick="search();" />
+    <img
+      id="loading"
+      src="loading.gif"
+      alt="loading..."
+      width="20"
+      height="20"
+    />
+    <br />
+
+    <div id="help" class="toggleBlock">
+      <div class="toggleHide" onclick="toggle()">Aide</div>
+      <div>
+        <table class="wikitable" style="display: inline-block">
+          <tbody>
+            <tr>
+              <th colspan="2">Consonnes</th>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('b');">b</span></td>
+              <td><b>b</b>al&nbsp;; <b>b</b>eau</td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('d');">d</span></td>
+              <td><b>d</b>oux</td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('f');">f</span></td>
+              <td><b>f</b>ête&nbsp;; <b>ph</b>armacie</td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('ɡ');">ɡ</span></td>
+              <td><b>g</b>ain&nbsp;; <b>gu</b>erre</td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('k');">k</span></td>
+              <td>
+                <b>c</b>abas&nbsp;; ar<b>ch</b>aï<b>qu</b>e&nbsp;; <b>k</b>elvin
+              </td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('l');">l</span></td>
+              <td><b>l</b>oup</td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('m');">m</span></td>
+              <td><b>m</b>ou&nbsp;; ho<b>mm</b>e</td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('n');">n</span></td>
+              <td><b>n</b>ous&nbsp;; bo<b>nn</b>e</td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('ŋ');">ŋ</span></td>
+              <td>parki<b>ng</b>&nbsp;; Leggi<b>ng</b></td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('ɲ');">ɲ</span></td>
+              <td>a<b>gn</b>eaux</td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('p');">p</span></td>
+              <td><b>p</b>assé</td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('ʁ');">ʁ</span></td>
+              <td><b>r</b>oue&nbsp;; <b>rh</b>ume</td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('s');">s</span></td>
+              <td>
+                <b>s</b>a&nbsp;; hau<b>ss</b>e&nbsp;; <b>sc</b>ie&nbsp;;
+                <b>c</b>e; gar<b>ç</b>on&nbsp;; op<b>t</b>ion&nbsp;; di<b>x</b>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('ʃ');">ʃ</span></td>
+              <td><b>ch</b>ou&nbsp;; <b>sch</b>éma&nbsp;; <b>sh</b>ampoing</td>
+            </tr>
+            <tr>
+              <td><span onclick="addPhoneme('t');">t</span></td>
+              <td><b>t</b>out&nbsp;; <b>th</b>é</td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('v');">v</span></td>
+              <td><b>v</b>ous&nbsp;; <b>w</b>agon</td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('z');">z</span></td>
+              <td>ba<b>s</b>e&nbsp;; <b>z</b>éro</td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('ʒ');">ʒ</span></td>
+              <td><b>j</b>e&nbsp;; <b>j</b>au<b>g</b>e&nbsp;; pi<b>ge</b>on</td>
+            </tr>
+            <tr>
+              <th colspan="2">Semi-voyelles</th>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('j');">j</span></td>
+              <td>
+                f<b>i</b>ef&nbsp;; pa<b>y</b>er&nbsp;; fi<b>ll</b>e&nbsp;;
+                trava<b>il</b>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('w');">w</span></td>
+              <td>
+                <b>ou</b>i&nbsp;; l<b>oi</b>&nbsp;; m<b>o</b>yen&nbsp;;
+                <b>w</b>eb
+              </td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('ɥ');">ɥ</span></td>
+              <td>h<b>u</b>it</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <table class="wikitable" style="float: left">
+          <tbody>
+            <tr>
+              <th colspan="2">Voyelles orales</th>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('a');">a</span></td>
+              <td>p<b>a</b>tte</td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('ɑ');">ɑ</span></td>
+              <td>p<b>â</b>te&nbsp;; gl<b>a</b>s</td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('e');">e</span></td>
+              <td>cl<b>é</b>&nbsp;; ch<b>ez</b>&nbsp;; all<b>er</b></td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('ɛ');">ɛ</span></td>
+              <td>l<b>e</b>ttre&nbsp;; ou<b>e</b>st&nbsp;; f<b>ai</b>te</td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('ɛː');">ɛː</span></td>
+              <td>m<b>è</b>re&nbsp;; f<b>ê</b>te&nbsp;; m<b>aî</b>tre</td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('ə');">ə</span></td>
+              <td>r<b>e</b>p<b>e</b>ser&nbsp;; dang<b>e</b>reux</td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('i');">i</span></td>
+              <td>s<b>i</b>&nbsp;; <b>î</b>le&nbsp;; <b>y</b></td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('œ');">œ</span></td>
+              <td>s<b>œu</b>r&nbsp;; j<b>eu</b>ne</td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('ø');">ø</span></td>
+              <td>c<b>eu</b>x&nbsp;; j<b>eû</b>ne</td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('ø');">o</span></td>
+              <td>
+                s<b>o</b>t&nbsp;; h<b>ô</b>tel&nbsp;; h<b>au</b>t&nbsp;; bur<b
+                  >eau</b
+                >
+              </td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('ɔ');">ɔ</span></td>
+              <td>s<b>o</b>rt&nbsp;; rh<b>u</b>m</td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('u');">u</span></td>
+              <td>c<b>ou</b>p</td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('y');">y</span></td>
+              <td>t<b>u</b>&nbsp;; s<b>û</b>r</td>
+            </tr>
+            <tr>
+              <th colspan="2">Voyelles nasales</th>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('ɑ̃');">ɑ̃</span></td>
+              <td>
+                s<b>an</b>s&nbsp;; v<b>en</b>t&nbsp;; p<b>aon</b>&nbsp;;
+                Sept<b>em</b>bre
+              </td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('ɛ̃');">ɛ̃</span></td>
+              <td>
+                v<b>in</b>&nbsp;; t<b>im</b>bre&nbsp;; m<b>ain</b>&nbsp;;
+                d<b>aim</b>&nbsp;; pl<b>ein</b>&nbsp;; R<b>eim</b>s&nbsp;;
+                l<b>yn</b>x&nbsp;; th<b>ym</b>&nbsp;; chi<b>en</b>
+              </td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('œ̃');">œ̃</span></td>
+              <td>br<b>un</b>&nbsp;; parf<b>um</b></td>
+            </tr>
+            <tr>
+              <td><span class="API" onclick="addPhoneme('ɔ̃');">ɔ̃</span></td>
+              <td>s<b>on</b></td>
+            </tr>
+          </tbody>
+          source: https://github.com/open-dict-data/ipa-dict
+        </table>
+      </div>
+    </div>
+
+    <br />
+    <div id="nbResult"></div>
+    <table id="result"></table>
+    <script src="fr_FR.js"></script>
+    <script>
+      function search() {
+        loading(true);
+        try {
+          const search = document.getElementById("search").value;
+          const result = document.getElementById("result");
+          const start = document.getElementById("start").checked;
+          result.innerHTML = "";
+          const words = find(dico, search, start);
+          document.getElementById(
+            "nbResult"
+          ).textContent = `Nombre de résultats : ${words.length}`;
+          for (const value of words) {
+            const tr = document.createElement("tr");
+
+            const td1 = document.createElement("td");
+            td1.textContent = value[0];
+            tr.appendChild(td1);
+
+            const td2 = document.createElement("td");
+            td2.textContent = `/${value[1]}/`;
+            tr.appendChild(td2);
+
+            result.appendChild(tr);
+          }
+        } catch (e) {
+          console.error(e);
+        } finally {
+          loading(false);
+        }
+      }
+      function find(dict, search, atStart) {
+        if (atStart) {
+          return Object.entries(dict).filter(([key, value]) => {
+            return value.startsWith(search);
+          });
+        }
+        return Object.entries(dict).filter(([key, value]) => {
+          return value.endsWith(search);
+        });
+      }
+      function loading(isLoading) {
+        document.getElementById("loading").style.display = isLoading
+          ? "block"
+          : "none";
+      }
+      function toggle() {
+        event.srcElement;
+        if (event.srcElement.className == "toggleShow") {
+          event.srcElement.className = "toggleHide";
+        } else {
+          event.srcElement.className = "toggleShow";
+        }
+      }
+      function addPhoneme(phoneme) {
+        const el = document.getElementById("search");
+        const [start, end] = [el.selectionStart, el.selectionEnd];
+        el.setRangeText(phoneme, start, end, "end");
+      }
+      loading(false);
+    </script>
+  </body>
+</html>
