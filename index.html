@@ -3,67 +3,8 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta charset="utf-8" />
+    <link rel="stylesheet" href="style.css" />
     <title>Rimes dico</title>
-    <style>
-      #result td:nth-child(1) {
-        border: 1px solid blue;
-      }
-      #result td:nth-child(2) {
-        border: 1px solid green;
-      }
-      .phoneme_ex {
-        font-size: 12px;
-      }
-      .phoneme {
-        cursor: pointer;
-        font-weight: bold;
-        /*color: blue;*/
-        border: 2px outset darkgray;
-        border-radius: 5px;
-        background-color: lightgray;
-        width: 16px;
-        display: inline-block;
-        text-align: center;
-      }
-      .slash {
-        color: gray;
-      }
-      .source {
-        font-size: 10px;
-        color: gray;
-      }
-      input:invalid {
-        box-shadow: 0 0 5px 1px red;
-      }
-      input:valid {
-        background-color: white;
-      }
-      .toggleBlock {
-        border-style: solid;
-        border-width: 1px;
-        border-color: var(--text-color);
-        border-radius: 4px 4px 0px 0px;
-        padding: 3px;
-        margin: 4px;
-      }
-      .toggleShow,
-      .toggleHide {
-        cursor: pointer;
-        font-weight: bold;
-      }
-      .toggleShow::before {
-        content: "▼ ";
-      }
-      .toggleShow + div {
-        display: block;
-      }
-      .toggleHide::before {
-        content: "▶ ";
-      }
-      .toggleHide + div {
-        display: none;
-      }
-    </style>
   </head>
   <body>
     <h1>Recherche de rimes en français</h1>
@@ -390,83 +331,12 @@
     <div id="nbResult"></div>
     <table id="result"></table>
     <div class="source">source: https://github.com/open-dict-data/ipa-dict</div>
+    <script>
+      var dico = {};
+    </script>
+    <script src="script.js"></script>
     <script src="fr_FR.js"></script>
     <script>
-      function search() {
-        loading(true);
-        try {
-          const search = document.getElementById("search");
-          const result = document.getElementById("result");
-          if (!search.value || !search.checkValidity()) {
-            loading(true);
-            result.innerHTML =
-              "Recherche invalide: " + search.validationMessage;
-            return;
-          }
-          let where = "start";
-          if (document.getElementById("end").checked) {
-            where = "end";
-          } else if (document.getElementById("contain").checked) {
-            where = "contain";
-          }
-          result.innerHTML = "";
-          const words = find(dico, search.value, where);
-          document.getElementById(
-            "nbResult"
-          ).textContent = `Nombre de mots: ${words.length}`;
-          for (const value of words) {
-            const tr = document.createElement("tr");
-
-            const td1 = document.createElement("td");
-            td1.textContent = value[0];
-            tr.appendChild(td1);
-
-            const td2 = document.createElement("td");
-            td2.innerHTML = `<span class="slash">/</span>${value[1]}<span class="slash">/</span>`;
-            tr.appendChild(td2);
-
-            result.appendChild(tr);
-            document.getElementById("help").className = "toggleHide";
-          }
-        } catch (e) {
-          console.error(e);
-        } finally {
-          loading(false);
-        }
-      }
-      function find(dict, search, atStart) {
-        if (atStart==="start") {
-          return Object.entries(dict).filter(([key, value]) => {
-            return value.startsWith(search);
-          });
-        } else if (atStart==="end") {
-          return Object.entries(dict).filter(([key, value]) => {
-            return value.endsWith(search);
-          });
-        } else {
-          return Object.entries(dict).filter(([key, value]) => {
-            return value.includes(search);
-          });
-        }
-      }
-      function loading(isLoading) {
-        document.getElementById("loading").style.display = isLoading
-          ? "block"
-          : "none";
-      }
-      function toggle() {
-        event.srcElement;
-        if (event.srcElement.className == "toggleShow") {
-          event.srcElement.className = "toggleHide";
-        } else {
-          event.srcElement.className = "toggleShow";
-        }
-      }
-      function addPhoneme(phoneme) {
-        const el = document.getElementById("search");
-        const [start, end] = [el.selectionStart, el.selectionEnd];
-        el.setRangeText(phoneme, start, end, "end");
-      }
       loading(false);
     </script>
   </body>
