@@ -1,72 +1,71 @@
-
 #result td:nth-child(1) {
-    border: 1px solid blue;
+  border: 1px solid blue;
 }
 
 #result td:nth-child(2) {
-    border: 1px solid green;
+  border: 1px solid green;
 }
 
 .phoneme_ex {
-    font-size: 12px;
+  font-size: 12px;
 }
 
 .phoneme {
-    cursor: pointer;
-    font-weight: bold;
-    /*color: blue;*/
-    border: 2px outset darkgray;
-    border-radius: 5px;
-    background-color: lightgray;
-    width: 16px;
-    display: inline-block;
-    text-align: center;
+  cursor: pointer;
+  font-weight: bold;
+  /*color: blue;*/
+  border: 2px outset darkgray;
+  border-radius: 5px;
+  background-color: lightgray;
+  width: 16px;
+  display: inline-block;
+  text-align: center;
 }
 
 .slash {
-    color: gray;
+  color: gray;
 }
 
 .source {
-    font-size: 10px;
-    color: gray;
+  font-size: 10px;
+  color: gray;
 }
 
 input:invalid {
-    box-shadow: 0 0 5px 1px red;
+  box-shadow: 0 0 5px 1px red;
 }
 
 input:valid {
-    background-color: white;
+  background-color: white;
 }
 
 .toggleBlock {
-    border-style: solid;
-    border-width: 1px;
-    border-color: var(--text-color);
-    border-radius: 4px 4px 0px 0px;
-    padding: 3px;
-    margin: 4px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: var(--text-color);
+  border-radius: 4px 4px 0px 0px;
+  padding: 3px;
+  margin: 4px;
 }
 
 .toggleShow,
 .toggleHide {
-    cursor: pointer;
-    font-weight: bold;
+  cursor: pointer;
+  font-weight: bold;
 }
 
 .toggleShow::before {
-    content: "▼ ";
+  content: "▼ ";
 }
 
 .toggleShow + div {
-    display: block;
+  display: block;
 }
 
 .toggleHide::before {
-    content: "▶ ";
+  content: "▶ ";
 }
 
 .toggleHide + div {
-    display: none;
+  display: none;
 }
