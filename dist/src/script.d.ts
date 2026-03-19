@@ -1,4 +1,12 @@
 declare function getById(id: string): HTMLElement;
+type PhonemeDetails = {
+    phoneme: string;
+    example: string;
+    category: string;
+    near: string[];
+};
+declare const phonemes: PhonemeDetails[];
+declare function initPhonemesList(): void;
 declare function search(dico: Record<string, string>): void;
 declare function getInput(): {
     search: string;

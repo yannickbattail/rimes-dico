@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -8,7 +8,7 @@
   </head>
   <body>
     <h1>Recherche de rimes en français</h1>
-    <p>Entrez la rime en phonétique (cliquez sur aide pour les phonèmes)</p>
+    <p><label for="search">Entrez la rime en phonétique (cliquez sur aide pour les phonèmes)</label></p>
     <input
       type="text"
       id="search"
@@ -23,307 +23,15 @@
     <label for="end">Fin</label>
     <input type="radio" id="contain" name="position" value="contain" />
     <label for="contain">Contient</label>
-    <input type="button" value="Rechercher" onclick="search(window.dico);" />
-    <img
-      id="loading"
-      src="loading.gif"
-      alt="loading..."
-      style="display: block"
-      width="20"
-      height="20"
-    />
+    <input type="button" value="Rechercher" onclick="search(window.dico)" />
+    <img id="loading" src="loading.gif" alt="loading..." style="display: block" width="20" height="20" />
     <br />
 
     <div class="toggleBlock">
       <div id="help" class="toggleHide" onclick="toggle(this)">Aide</div>
       <div>
-        <div class="phoneme_ex">
-          Vous pouvez cliquer sur les phonèmes
-          <div class="phoneme">_</div>
-          pour les ajouter à la recherche
-        </div>
-        <table class="wikitable" style="display: inline-block">
-          <tbody>
-            <tr>
-              <th colspan="2">Consonnes</th>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('b');">b</div></td>
-              <td>
-                <div class="phoneme_ex"><b>b</b>al <b>b</b>eau</div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('d');">d</div></td>
-              <td>
-                <div class="phoneme_ex"><b>d</b>oux</div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('f');">f</div></td>
-              <td>
-                <div class="phoneme_ex">
-                  <b>f</b>ête <b>ph</b>armacie
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('g');">g</div></td>
-              <td>
-                <div class="phoneme_ex"><b>g</b>ain <b>gu</b>erre</div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('k');">k</div></td>
-              <td>
-                <div class="phoneme_ex">
-                  <b>c</b>abas ar<b>ch</b>aï<b>qu</b>e
-                  <b>k</b>elvin
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('l');">l</div></td>
-              <td>
-                <div class="phoneme_ex"><b>l</b>oup</div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('m');">m</div></td>
-              <td>
-                <div class="phoneme_ex"><b>m</b>ou ho<b>mm</b>e</div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('n');">n</div></td>
-              <td>
-                <div class="phoneme_ex"><b>n</b>ous bo<b>nn</b>e</div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('ŋ');">ŋ</div></td>
-              <td>
-                <div class="phoneme_ex">
-                  parki<b>ng</b> Leggi<b>ng</b>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('ɲ');">ɲ</div></td>
-              <td><div class="phoneme_ex">a<b>gn</b>eaux</div></td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('p');">p</div></td>
-              <td>
-                <div class="phoneme_ex"><b>p</b>assé</div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('ʁ');">ʁ</div></td>
-              <td>
-                <div class="phoneme_ex"><b>r</b>oue <b>rh</b>ume</div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('s');">s</div></td>
-              <td>
-                <div class="phoneme_ex">
-                  <b>s</b>a hau<b>ss</b>e <b>sc</b>ie
-                  <b>c</b>e; gar<b>ç</b>on op<b>t</b>ion di<b
-                    >x</b
-                  >
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('ʃ');">ʃ</div></td>
-              <td>
-                <div class="phoneme_ex">
-                  <b>ch</b>ou <b>sch</b>éma <b>sh</b>ampoing
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('t');">t</div></td>
-              <td>
-                <div class="phoneme_ex"><b>t</b>out <b>th</b>é</div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('v');">v</div></td>
-              <td>
-                <div class="phoneme_ex"><b>v</b>ous <b>w</b>agon</div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('z');">z</div></td>
-              <td>
-                <div class="phoneme_ex">ba<b>s</b>e <b>z</b>éro</div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('ʒ');">ʒ</div></td>
-              <td>
-                <div class="phoneme_ex">
-                  <b>j</b>e <b>j</b>au<b>g</b>e pi<b>ge</b>on
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <table class="wikitable" style="display: inline-block">
-          <tbody>
-            <tr>
-              <th colspan="2">Voyelles orales</th>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('a');">a</div></td>
-              <td><div class="phoneme_ex">p<b>a</b>tte</div></td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('ɑ');">ɑ</div></td>
-              <td>p<b>â</b>te gl<b>a</b>s</td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('e');">e</div></td>
-              <td>
-                <div class="phoneme_ex">
-                  cl<b>é</b> ch<b>ez</b> all<b>er</b>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('ɛ');">ɛ</div></td>
-              <td>
-                <div class="phoneme_ex">
-                  l<b>e</b>ttre ou<b>e</b>st f<b>ai</b>te
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <div class="phoneme" onclick="addPhoneme('ɛː');">ɛː</div>
-              </td>
-              <td>
-                <div class="phoneme_ex">
-                  m<b>è</b>re f<b>ê</b>te m<b>aî</b>tre
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('ə');">ə</div></td>
-              <td>
-                <div class="phoneme_ex">
-                  r<b>e</b>p<b>e</b>ser dang<b>e</b>reux
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('i');">i</div></td>
-              <td>
-                <div class="phoneme_ex">
-                  s<b>i</b> <b>î</b>le <b>y</b>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('œ');">œ</div></td>
-              <td>
-                <div class="phoneme_ex">s<b>œu</b>r j<b>eu</b>ne</div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('ø');">ø</div></td>
-              <td>
-                <div class="phoneme_ex">c<b>eu</b>x j<b>eû</b>ne</div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('o');">o</div></td>
-              <td>
-                <div class="phoneme_ex">
-                  s<b>o</b>t h<b>ô</b>tel h<b>au</b>t bur<b
-                    >eau</b
-                  >
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('ɔ');">ɔ</div></td>
-              <td>
-                <div class="phoneme_ex">s<b>o</b>rt rh<b>u</b>m</div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('u');">u</div></td>
-              <td><div class="phoneme_ex">c<b>ou</b>p</div></td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('y');">y</div></td>
-              <td><div class="phoneme_ex">t<b>u</b> s<b>û</b>r</div></td>
-            </tr>
-            <tr>
-              <th colspan="2">Voyelles nasales</th>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('ɑ̃');">ɑ̃</div></td>
-              <td>
-                <div class="phoneme_ex">
-                  s<b>an</b>s v<b>en</b>t p<b>aon</b>
-                  Sept<b>em</b>bre
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('ɛ̃');">ɛ̃</div></td>
-              <td>
-                <div class="phoneme_ex">
-                  v<b>in</b> t<b>im</b>bre m<b>ain</b>
-                  d<b>aim</b> pl<b>ein</b> R<b>eim</b>s
-                  l<b>yn</b>x th<b>ym</b> chi<b>en</b>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('œ̃');">œ̃</div></td>
-              <td>
-                <div class="phoneme_ex">br<b>un</b> parf<b>um</b></div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('ɔ̃');">ɔ̃</div></td>
-              <td>
-                <div class="phoneme_ex">s<b>on</b></div>
-              </td>
-            </tr>
-            <tr>
-              <th colspan="2">Semi-voyelles</th>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('j');">j</div></td>
-              <td>
-                <div class="phoneme_ex">
-                  f<b>i</b>ef pa<b>y</b>er fi<b>ll</b>e
-                  trava<b>il</b>
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('w');">w</div></td>
-              <td>
-                <div class="phoneme_ex">
-                  <b>ou</b>i l<b>oi</b> m<b>o</b>yen
-                  <b>w</b>eb
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="phoneme" onclick="addPhoneme('ɥ');">ɥ</div></td>
-              <td><div class="phoneme_ex">h<b>u</b>it</div></td>
-            </tr>
-          </tbody>
-        </table>
+        <div>Vous pouvez cliquer sur les phonèmes pour les ajouter à la recherche</div>
+        <div id="phonemesList" class="wikitable" style="display: inline-block"></div>
       </div>
     </div>
 
@@ -338,6 +46,7 @@
     <script src="dist/src/script.js"></script>
     <script>
       hideLoading();
+      initPhonemesList();
     </script>
   </body>
 </html>
