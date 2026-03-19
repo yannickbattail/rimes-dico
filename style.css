@@ -1,3 +1,8 @@
+body {
+  color: #eaeaed;
+  background-color: #242329;
+}
+
 #result td:nth-child(1) {
   border: 1px solid blue;
 }
@@ -13,10 +18,10 @@
 .phoneme {
   cursor: pointer;
   font-weight: bold;
-  /*color: blue;*/
-  border: 2px outset darkgray;
+  color: black;
+  background-color: #63a6e9;
+  border: 2px outset;
   border-radius: 5px;
-  background-color: lightgray;
   width: 16px;
   display: inline-block;
   text-align: center;
@@ -31,12 +36,27 @@
   color: gray;
 }
 
+
+
+input[type=text] {
+  color: white;
+  background-color: #454349;
+  border: 2px inset;
+  border-radius: 5px;
+}
+
+input[type=button] {
+  color: black;
+  background-color: #63a6e9;
+  border: 2px outset;
+  border-radius: 5px;
+}
+
 input:invalid {
   box-shadow: 0 0 5px 1px red;
 }
 
 input:valid {
-  background-color: white;
 }
 
 .toggleBlock {
