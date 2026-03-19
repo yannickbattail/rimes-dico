@@ -1,5 +1,4 @@
 node_modules
 coverage
-dist
 openscad-generate-*.tgz
 .idea
