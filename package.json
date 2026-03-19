@@ -1,0 +1,46 @@
+{
+  "name": "rimes-dico",
+  "description": "Recherche de rimes en français",
+  "version": "1.1.0",
+  "author": "XcinnaY",
+  "maintainer": "XcinnaY",
+  "license": "LGPL-3.0-or-later",
+  "type": "module",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "bin": "./dist/src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yannickbattail/rimes-dico"
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  },
+  "scripts": {
+    "clean": "rm -Rf ./*.js ./*/*.js coverage dist tests/unit/run/out || true",
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "test": "vitest run ./tests/ --coverage",
+    "lint": "eslint --fix src tests",
+    "format": "prettier --log-level error --write .",
+    "depcheck": "depcheck --quiet --ignore-path=./.gitignore --ignores='@types/*,@vitest/coverage-v8'",
+    "check": "npm run depcheck && npm run format && npm run lint && npm run build && npm run test",
+    "check-updates": "npm-check-updates -u && npm update --save && npm i && npm dedupe && npm run check",
+    "publish-new-v": "npm version patch --no-git-tag-version && npm run check && npm publish"
+  },
+  "dependencies": {
+    "globals": "17.4.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "25.4.0",
+    "@vitest/coverage-v8": "4.0.18",
+    "depcheck": "1.4.7",
+    "eslint": "10.0.3",
+    "npm-check-updates": "19.6.3",
+    "prettier": "3.8.1",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.57.0",
+    "vitest": "4.0.18"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "NodeNext",
+    "moduleDetection": "legacy",
+    "lib": ["ES2023", "DOM", "ESNext.Disposable"],
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "moduleResolution": "nodenext",
+    "strict": true,
+    "skipLibCheck": false,
+    "verbatimModuleSyntax": false,
+    "outDir": "./dist",
+    "rootDir": "./",
+    "declaration": true,
+    "experimentalDecorators": true,
+    "strictNullChecks": true,
+    "noImplicitAny": false,
+    "forceConsistentCasingInFileNames": true,
+    "allowJs": false
+  },
+  "exclude": ["node_modules", "dist"]
+}
