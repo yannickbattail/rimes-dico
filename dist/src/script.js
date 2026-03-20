@@ -285,8 +285,9 @@ function getInput() {
     else if (getById("contain").checked) {
         where = "contain";
     }
+    const near = getById("near").checked;
     result.innerHTML = "";
-    return { search: search.value, where };
+    return { search: search.value, where, near };
 }
 function displayResult(words) {
     const result = getById("result");
@@ -302,7 +303,28 @@ function displayResult(words) {
         result.appendChild(tr);
     }
 }
+function buildRegex(search) {
+    const reg = buildAlternative(search.search, phonemes);
+    const regexStr = `${search.where === "start" ? "^" : ""}${reg}${search.where === "end" ? "$" : ""}`;
+    return new RegExp(regexStr, "v");
+}
+function buildAlternative(search, phonemes) {
+    const segmenter = typeof Intl !== "undefined" && "Segmenter" in Intl ? new Intl.Segmenter("fr", { granularity: "grapheme" }) : null;
+    const chars = segmenter ? [...segmenter.segment(search)].map((s) => s.segment) : Array.from(search); // Unicode code-point fallback
+    return chars
+        .map((char) => {
+        const phonemesNear = phonemes.find((p) => p.phoneme === char)?.near;
+        return phonemesNear ? `(${phonemesNear.join("|")})` : char;
+    })
+        .join("");
+}
 function findInDico(dict, search) {
+    if (search.near) {
+        const regex = buildRegex(search);
+        return Object.entries(dict).filter(([, value]) => {
+            return value.match(regex);
+        });
+    }
     switch (search.where) {
         case "start":
             return Object.entries(dict).filter(([, value]) => {
