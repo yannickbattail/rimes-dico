@@ -271,19 +271,92 @@ function initPhonemesList() {
   }
 }
 
+type WordIpa = {
+  ipa: string;
+  words: string[];
+};
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 function search(dico: Record<string, string>) {
   showLoading(true);
   try {
     const find = getInput();
     const words = findInDico(dico, find);
-    displayResult(words);
+
+    const wordsIpa: WordIpa[] = toWordIpa(words).map(concatPlurals);
+    displayResult(wordsIpa, words.length);
     getById("help").className = "toggleHide";
   } catch (e) {
     console.error(e);
   } finally {
     hideLoading(false);
   }
+}
+
+function concatPlurals(wordsIpa: WordIpa): WordIpa {
+  const allWords = new Set(wordsIpa.words);
+  const out: string[] = [];
+  const seen = new Set<string>();
+
+  for (const word of wordsIpa.words) {
+    // Avoid duplicates in output if input contains duplicates.
+    if (seen.has(word)) {
+      continue;
+    }
+
+    // Case 1: current word is singular and plural exists (word + "s")
+    const plural = `${word}s`;
+    if (allWords.has(plural)) {
+      const merged = `${word}(s)`;
+      if (!seen.has(merged)) {
+        out.push(merged);
+        seen.add(merged);
+      }
+      seen.add(word);
+      seen.add(plural);
+      continue;
+    }
+
+    // Case 2: current word is plural and singular exists (word without trailing "s")
+    if (word.endsWith("s")) {
+      const singular = word.slice(0, -1);
+      if (allWords.has(singular)) {
+        const merged = `${singular}(s)`;
+        if (!seen.has(merged)) {
+          out.push(merged);
+          seen.add(merged);
+        }
+        seen.add(word);
+        seen.add(singular);
+        continue;
+      }
+    }
+
+    // No pair found: keep as-is
+    out.push(word);
+    seen.add(word);
+  }
+
+  return {
+    ...wordsIpa,
+    words: out,
+  };
+}
+
+function toWordIpa(words: [string, string][]): WordIpa[] {
+  const grouped = new Map<string, string[]>();
+
+  for (const [word, ipa] of words) {
+    if (!grouped.has(ipa)) {
+      grouped.set(ipa, []);
+    }
+    grouped.get(ipa)!.push(word);
+  }
+
+  return Array.from(grouped.entries()).map(([ipa, wordList]) => ({
+    ipa,
+    words: wordList,
+  }));
 }
 
 function getInput(): { search: string; where: "start" | "end" | "contain"; near: boolean } {
@@ -304,15 +377,15 @@ function getInput(): { search: string; where: "start" | "end" | "contain"; near:
   return { search: search.value, where, near };
 }
 
-function displayResult(words: [string, string][]) {
+function displayResult(words: WordIpa[], numberOfWord: number) {
   const result = getById("result") as HTMLInputElement;
-  getById("nbResult").textContent = `Nombre de mots: ${words.length}`;
-  for (const value of words) {
+  getById("nbResult").textContent = `Nombre de mots: ${numberOfWord}`;
+  for (const wordIpa of words) {
     const td1 = document.createElement("td");
-    td1.textContent = value[0];
+    td1.textContent = wordIpa.ipa;
 
     const td2 = document.createElement("td");
-    td2.innerHTML = `<span class="slash">/</span>${value[1]}<span class="slash">/</span>`;
+    td2.innerHTML = `<span class="slash">/</span>${wordIpa.words.join(", ")}<span class="slash">/</span>`;
 
     const tr = document.createElement("tr");
     tr.appendChild(td1);
@@ -390,3 +463,12 @@ function addPhoneme(phoneme: string) {
   const el = getById("search") as HTMLInputElement;
   el.setRangeText(phoneme, el.selectionStart ?? 0, el.selectionEnd ?? 0, "end");
 }
+
+type ScriptApi = {
+  findInDico: typeof findInDico;
+  concatPlurals: typeof concatPlurals;
+};
+
+const apiTarget = globalThis as typeof globalThis & Partial<ScriptApi>;
+apiTarget.findInDico = findInDico;
+apiTarget.concatPlurals = concatPlurals;

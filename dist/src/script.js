@@ -261,7 +261,8 @@ function search(dico) {
     try {
         const find = getInput();
         const words = findInDico(dico, find);
-        displayResult(words);
+        const wordsIpa = toWordIpa(words).map(concatPlurals);
+        displayResult(wordsIpa, words.length);
         getById("help").className = "toggleHide";
     }
     catch (e) {
@@ -270,6 +271,63 @@ function search(dico) {
     finally {
         hideLoading(false);
     }
+}
+function concatPlurals(wordsIpa) {
+    const allWords = new Set(wordsIpa.words);
+    const out = [];
+    const seen = new Set();
+    for (const word of wordsIpa.words) {
+        // Avoid duplicates in output if input contains duplicates.
+        if (seen.has(word)) {
+            continue;
+        }
+        // Case 1: current word is singular and plural exists (word + "s")
+        const plural = `${word}s`;
+        if (allWords.has(plural)) {
+            const merged = `${word}(s)`;
+            if (!seen.has(merged)) {
+                out.push(merged);
+                seen.add(merged);
+            }
+            seen.add(word);
+            seen.add(plural);
+            continue;
+        }
+        // Case 2: current word is plural and singular exists (word without trailing "s")
+        if (word.endsWith("s")) {
+            const singular = word.slice(0, -1);
+            if (allWords.has(singular)) {
+                const merged = `${singular}(s)`;
+                if (!seen.has(merged)) {
+                    out.push(merged);
+                    seen.add(merged);
+                }
+                seen.add(word);
+                seen.add(singular);
+                continue;
+            }
+        }
+        // No pair found: keep as-is
+        out.push(word);
+        seen.add(word);
+    }
+    return {
+        ...wordsIpa,
+        words: out,
+    };
+}
+function toWordIpa(words) {
+    const grouped = new Map();
+    for (const [word, ipa] of words) {
+        if (!grouped.has(ipa)) {
+            grouped.set(ipa, []);
+        }
+        grouped.get(ipa).push(word);
+    }
+    return Array.from(grouped.entries()).map(([ipa, wordList]) => ({
+        ipa,
+        words: wordList,
+    }));
 }
 function getInput() {
     const search = getById("search");
@@ -289,14 +347,14 @@ function getInput() {
     result.innerHTML = "";
     return { search: search.value, where, near };
 }
-function displayResult(words) {
+function displayResult(words, numberOfWord) {
     const result = getById("result");
-    getById("nbResult").textContent = `Nombre de mots: ${words.length}`;
-    for (const value of words) {
+    getById("nbResult").textContent = `Nombre de mots: ${numberOfWord}`;
+    for (const wordIpa of words) {
         const td1 = document.createElement("td");
-        td1.textContent = value[0];
+        td1.textContent = wordIpa.ipa;
         const td2 = document.createElement("td");
-        td2.innerHTML = `<span class="slash">/</span>${value[1]}<span class="slash">/</span>`;
+        td2.innerHTML = `<span class="slash">/</span>${wordIpa.words.join(", ")}<span class="slash">/</span>`;
         const tr = document.createElement("tr");
         tr.appendChild(td1);
         tr.appendChild(td2);
@@ -360,3 +418,6 @@ function addPhoneme(phoneme) {
     const el = getById("search");
     el.setRangeText(phoneme, el.selectionStart ?? 0, el.selectionEnd ?? 0, "end");
 }
+const apiTarget = globalThis;
+apiTarget.findInDico = findInDico;
+apiTarget.concatPlurals = concatPlurals;

@@ -7,13 +7,19 @@ type PhonemeDetails = {
 };
 declare const phonemes: PhonemeDetails[];
 declare function initPhonemesList(): void;
+type WordIpa = {
+    ipa: string;
+    words: string[];
+};
 declare function search(dico: Record<string, string>): void;
+declare function concatPlurals(wordsIpa: WordIpa): WordIpa;
+declare function toWordIpa(words: [string, string][]): WordIpa[];
 declare function getInput(): {
     search: string;
     where: "start" | "end" | "contain";
     near: boolean;
 };
-declare function displayResult(words: [string, string][]): void;
+declare function displayResult(words: WordIpa[], numberOfWord: number): void;
 declare function buildRegex(search: {
     search: string;
     where: "start" | "end" | "contain";
@@ -28,3 +34,8 @@ declare function showLoading(isLoading: boolean): void;
 declare function hideLoading(isLoading: boolean): void;
 declare function toggle(element: HTMLElement): void;
 declare function addPhoneme(phoneme: string): void;
+type ScriptApi = {
+    findInDico: typeof findInDico;
+    concatPlurals: typeof concatPlurals;
+};
+declare const apiTarget: typeof globalThis & Partial<ScriptApi>;
