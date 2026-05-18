@@ -29,18 +29,18 @@
     "publish-new-v": "npm version patch --no-git-tag-version && npm run check && npm publish"
   },
   "dependencies": {
-    "globals": "17.4.0"
+    "globals": "17.6.0"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
-    "@types/node": "25.4.0",
-    "@vitest/coverage-v8": "4.0.18",
+    "@types/node": "25.9.0",
+    "@vitest/coverage-v8": "4.1.6",
     "depcheck": "1.4.7",
-    "eslint": "10.0.3",
-    "npm-check-updates": "19.6.3",
-    "prettier": "3.8.1",
-    "typescript": "5.9.3",
-    "typescript-eslint": "8.57.0",
-    "vitest": "4.0.18"
+    "eslint": "10.4.0",
+    "npm-check-updates": "22.2.0",
+    "prettier": "3.8.3",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.59.4",
+    "vitest": "4.1.6"
   }
 }
